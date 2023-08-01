@@ -14,9 +14,9 @@ public class TimeLogSystem {
     public List<Projet> getProjects() {
         return projects;
     }
-    private List<Employe> employees;
-    private List<Projet> projects;
-    private List<Assignation> assignments;
+    public static List<Employe> employees;
+    public static List<Projet> projects;
+    public static List<Assignation> assignments;
 
     public void addEmployee(Employe employe) {
         employees.add(employe);
