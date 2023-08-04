@@ -6,11 +6,12 @@ public class Admin {
     private String username;
     private int Id;
     private String password;
-
-    public Admin(String username, int id, String password) {
+    private Role role;
+    public Admin(String username, int id, String password, Role role) {
         this.username = username;
         Id = id;
         this.password = password;
+        this.role = role;
     }
 
     public String getUsername() {
@@ -76,5 +77,13 @@ public class Admin {
         // Vérifier si l'employé existe et si le projet est valide, puis créer l'assignation
         Assignation assignment = new Assignation(employee, project, discipline, startTime, null);
         TimeLogSystem.assignments.add(assignment);
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
