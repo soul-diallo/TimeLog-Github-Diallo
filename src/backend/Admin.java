@@ -3,13 +3,13 @@ package backend;
 import java.util.Date;
 
 public class Admin {
-    private String username;
     private int Id;
+    private String username;
     private String password;
     private Role role;
-    public Admin(String username, int id, String password, Role role) {
-        this.username = username;
+    public Admin(int id, String username, String password, Role role) {
         Id = id;
+        this.username = username;
         this.password = password;
         this.role = role;
     }
