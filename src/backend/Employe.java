@@ -3,8 +3,9 @@ package backend;
 import java.util.Date;
 
 public class Employe {
-    private String username;
     private int ID;
+    private String username;
+    private String password;
     private double hourlyRate;
     private double overtimeRate;
     private Date hireDate;
@@ -67,13 +68,22 @@ public class Employe {
         this.poste = poste;
     }
 
-    public Employe(String username, int ID, double hourlyRate, double overtimeRate, Date hireDate, String socialSecurity, String poste) {
-        this.username = username;
+    public Employe(int ID, String username, String password, double hourlyRate, double overtimeRate, Date hireDate, String socialSecurity, String poste) {
         this.ID = ID;
+        this.username = username;
+        this.password = password;
         this.hourlyRate = hourlyRate;
         this.overtimeRate = overtimeRate;
         this.hireDate = hireDate;
         this.socialSecurity = socialSecurity;
         this.poste = poste;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

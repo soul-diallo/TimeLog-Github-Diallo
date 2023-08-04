@@ -3,14 +3,15 @@ package backend;
 import java.util.Date;
 
 public class Admin {
-    private String username;
     private int Id;
+    private String username;
     private String password;
-
-    public Admin(String username, int id, String password) {
-        this.username = username;
+    private Role role;
+    public Admin(int id, String username, String password, Role role) {
         Id = id;
+        this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     public String getUsername() {
@@ -76,5 +77,13 @@ public class Admin {
         // Vérifier si l'employé existe et si le projet est valide, puis créer l'assignation
         Assignation assignment = new Assignation(employee, project, discipline, startTime, null);
         TimeLogSystem.assignments.add(assignment);
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
