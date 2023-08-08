@@ -46,9 +46,9 @@ public class Projet {
         this.budget = budget;
     }
 
-    public Projet(String name, int ID, Date startDate, Date endDate, double budget) {
-        this.name = name;
+    public Projet(int ID, String name, Date startDate, Date endDate, double budget) {
         this.ID = ID;
+        this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.budget = budget;

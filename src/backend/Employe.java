@@ -8,7 +8,12 @@ public class Employe {
     private String password;
     private double hourlyRate;
     private double overtimeRate;
-    private Date hireDate;
+
+    public void setHireDate(String hireDate) {
+        this.hireDate = hireDate;
+    }
+
+    private String hireDate;
     private String socialSecurity;
     private String poste;
 
@@ -44,13 +49,11 @@ public class Employe {
         this.overtimeRate = overtimeRate;
     }
 
-    public Date getHireDate() {
+    public String getHireDate() {
         return hireDate;
     }
 
-    public void setHireDate(Date hireDate) {
-        this.hireDate = hireDate;
-    }
+
 
     public String getSocialSecurity() {
         return socialSecurity;
@@ -68,7 +71,7 @@ public class Employe {
         this.poste = poste;
     }
 
-    public Employe(int ID, String username, String password, double hourlyRate, double overtimeRate, Date hireDate, String socialSecurity, String poste) {
+    public Employe(int ID, String username, String password, double hourlyRate, double overtimeRate, String hireDate, String socialSecurity, String poste) {
         this.ID = ID;
         this.username = username;
         this.password = password;

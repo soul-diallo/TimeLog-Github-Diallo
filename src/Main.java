@@ -1,7 +1,5 @@
 import backend.*;
-import user_interface.AdminUI;
-
-import java.util.ArrayList;
+import UI.AdminUI;
 
 public class Main {
     public static void main(String[] args) {

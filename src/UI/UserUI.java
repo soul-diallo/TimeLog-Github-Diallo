@@ -1,4 +1,4 @@
-package user_interface;
+package UI;
 
 import backend.Employe;
 import backend.TimeLogSystem;

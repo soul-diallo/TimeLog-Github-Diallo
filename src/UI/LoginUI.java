@@ -1,4 +1,4 @@
-package user_interface;
+package UI;
 
 import backend.Admin;
 import backend.Employe;
