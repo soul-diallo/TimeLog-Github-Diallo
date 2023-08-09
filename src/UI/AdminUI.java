@@ -2,6 +2,7 @@ package UI;
 
 import backend.Admin;
 import backend.Employe;
+import backend.Projet;
 import backend.TimeLogSystem;
 
 import java.util.Date;
@@ -81,19 +82,28 @@ public class AdminUI {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Entrer l'id du projet: ");
         int id = scanner.nextInt();
+        System.out.println();
 
         System.out.print("Entrer le nom du projet: ");
         String name = scanner.nextLine();
+        System.out.println();
 
         System.out.print("Entrer la date de debut du projet: ");
         String startDate = scanner.nextLine();
+        System.out.println();
 
         System.out.print("Entrer la date de fin du projet: ");
         String endDate = scanner.nextLine();
+        System.out.println();
 
         System.out.print("Entrer le budget du projet: ");
         double budget = scanner.nextDouble();
+        System.out.println();
 
+        Projet newProjet = new Projet(id,name,startDate,endDate,budget);
+        timeLogSystem.addProject(newProjet);
+        System.out.println(timeLogSystem.getProjects().get(0).getName());
+        System.out.println("Projet creer avec succes");
     }
 
     private void assignProject() {
