@@ -69,6 +69,5 @@ public class TimeEntry {
         return timestamp;
     }
 
-    // ... (autres méthodes)
 }
 

@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class testMain {
+public class initializeClass {
 
-    public testMain() {
+    public initializeClass() {
 
     }
 
@@ -94,29 +94,6 @@ public class testMain {
                 }
             }
         }
-
-
-//        // Affichage des informations des employés et des projets au format JSON
-//        System.out.println("Informations des employés :");
-//        for (Employee employee : timeLogSystem.getEmployees()) {
-//            System.out.println(JsonUtils.toJson(employee));
-//        }
-//
-//        System.out.println("\nInformations des projets :");
-//        for (Project project : timeLogSystem.getProjects()) {
-//            System.out.println(JsonUtils.toJson(project));
-//        }
-//
-//         // Rapport
-//        project1.generateProjectStatusReport();
-
-//        // Convertir les employés en JSON et écrire dans un fichier
-//        String employeesJson = JsonUtils.toJson(timeLogSystem.getEmployees());
-//        JsonUtils.writeJsonToFile(employeesJson, "employees.json");
-//
-//        // Convertir les projets en JSON et écrire dans un fichier
-//        String projectsJson = JsonUtils.toJson(timeLogSystem.getProjects());
-//        JsonUtils.writeJsonToFile(projectsJson, "projects.json");
 
         return timeLogSystem;
 

@@ -13,17 +13,6 @@ public class MenuUtils {
     public static final Scanner scanner = new Scanner(System.in);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    public static int displayUserTypeMenu() {
-        System.out.println("=== Menu Principal ===");
-        System.out.println("1. Rapport d'état d'un projet");
-        System.out.println("2. Rapport d'état global");
-        System.out.println("3. Rapport de salaire d'un employé");
-        System.out.println("0. Quitter");
-        System.out.print("Veuillez entrer votre choix : ");
-
-        return scanner.nextInt();
-    }
-
     public static void displayAdminMenu(TimeLogSystem timeLogSystem, Scanner scanner) {
         while (true) {
             System.out.println("****** Menu Administrateur ******");
@@ -145,8 +134,6 @@ public class MenuUtils {
         // Sauvegarder dans le fichier JSON
         JsonUtils.saveToJson(timeLogSystem, TimeLogSystem.JSON_FILENAME);
     }
-
-
 
     public static void displayUserMenu(TimeLogSystem timeLogSystem, Scanner scanner) {
         Employee loggedInUser = timeLogSystem.getLoggedInUser();
@@ -420,10 +407,6 @@ public class MenuUtils {
         }
 
         System.out.println("============================");
-    }
-
-    public static void displayEmployeeSalaryReport(Employee employee) {
-        // ... (affiche le rapport de salaire d'un employé)
     }
 
     public static void displayTotalSalariesReport(double totalBasePay, double totalOvertimePay) {

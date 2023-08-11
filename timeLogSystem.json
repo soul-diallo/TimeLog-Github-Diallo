@@ -32,6 +32,12 @@
       },
       "name": "projet3",
       "identificationNumber": 3
+    },
+    {
+      "startDate": "Aug 10, 2023, 11:10:36 PM",
+      "budgetedHours": {},
+      "name": "newProject",
+      "identificationNumber": 2
     }
   ],
   "assignmentManager": {

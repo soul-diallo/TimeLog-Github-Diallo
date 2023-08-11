@@ -2,7 +2,7 @@ package UI;
 
 import backend.Employee;
 import backend.TimeLogSystem;
-import backend.testMain;
+import backend.initializeClass;
 import utils.MenuUtils;
 
 import java.util.Scanner;
@@ -13,7 +13,7 @@ import static utils.MenuUtils.getUserChoice;
 
 public class UserInterface {
     static Scanner scanner = new Scanner(System.in);
-    static testMain init = new testMain();
+    static initializeClass init = new initializeClass();
     static TimeLogSystem timeLogSystem = init.init();
     public static void start() {
         Scanner scanner = new Scanner(System.in);

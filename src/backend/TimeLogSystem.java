@@ -114,10 +114,6 @@ public class TimeLogSystem {
         return assignmentManager.getEmployeeAssignments(employee);
     }
 
-    // Other methods for TimeLogSystem functionalities
-
-
-
     public static int getMaxProjectsPerEmployee() {
         return maxProjectsPerEmployee;
     }
