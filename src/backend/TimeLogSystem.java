@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import static com.packtpub.db.Main.scanner;
+import static utils.MenuUtils.scanner;
 
 public class TimeLogSystem {
     private static List<Employee> employees;

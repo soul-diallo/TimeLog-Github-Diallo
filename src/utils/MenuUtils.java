@@ -6,10 +6,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static utils.JsonUtils.gson;
 
 
 public class MenuUtils {
-    private static final Scanner scanner = new Scanner(System.in);
+    public static final Scanner scanner = new Scanner(System.in);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public static int displayUserTypeMenu() {
@@ -133,7 +134,7 @@ public class MenuUtils {
         System.out.print("Entrez le taux horaire supplémentaire : ");
         double overtimeHourlyRate = scanner.nextDouble();
 
-        // ... Demander d'autres détails sur l'employé ...
+
 
         // Créer l'employé et l'ajouter au système
         Employee employee = new Employee(username, password, baseHourlyRate, overtimeHourlyRate);

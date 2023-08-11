@@ -1,0 +1,42 @@
+{
+  "projects": [
+    {
+      "startDate": "Aug 10, 2023, 10:39:07 PM",
+      "endDate": "Aug 10, 2023, 10:39:07 PM",
+      "budgetedHours": {
+        "test": 15.0,
+        "implementation": 30.0,
+        "design1": 20.0
+      },
+      "name": "projet1",
+      "identificationNumber": 1
+    },
+    {
+      "startDate": "Aug 10, 2023, 10:39:08 PM",
+      "endDate": "Aug 10, 2023, 10:39:08 PM",
+      "budgetedHours": {
+        "test": 20.0,
+        "implementation": 35.0,
+        "design2": 25.0
+      },
+      "name": "projet2",
+      "identificationNumber": 2
+    },
+    {
+      "startDate": "Aug 10, 2023, 10:39:08 PM",
+      "endDate": "Aug 10, 2023, 10:39:08 PM",
+      "budgetedHours": {
+        "test": 25.0,
+        "implementation": 40.0,
+        "design1": 30.0
+      },
+      "name": "projet3",
+      "identificationNumber": 3
+    }
+  ],
+  "assignmentManager": {
+    "employeeAssignments": {}
+  },
+  "adminUsername": "admin",
+  "adminPassword": "admin"
+}
