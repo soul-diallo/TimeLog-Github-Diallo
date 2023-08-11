@@ -53,10 +53,10 @@ public class AdminUI {
         int id = scanner.nextInt();
 
         System.out.print("Entrer l'username: ");
-        String username = scanner.nextLine();
+        String username = scanner.next();
 
         System.out.print("Entrer le password: ");
-        String password = scanner.nextLine();
+        String password = scanner.next();
 
         System.out.print("Entrer le hourlyRate: ");
         double hourlyRate = scanner.nextDouble();
@@ -65,13 +65,13 @@ public class AdminUI {
         double overtimeRate = scanner.nextDouble();
 
         System.out.print("Entrer le hireDate: ");
-        String hireDate = scanner.nextLine();
+        String hireDate = scanner.next();
 
         System.out.print("Entrer le socialSecurity: ");
-        String socialSecurity = scanner.nextLine();
+        String socialSecurity = scanner.next();
 
         System.out.print("Entrer le poste: ");
-        String poste = scanner.nextLine();
+        String poste = scanner.next();
 
         Employe newEmploye = new Employe(id,username,password,hourlyRate,overtimeRate,hireDate,socialSecurity,poste);
         timeLogSystem.addEmployee(newEmploye);
@@ -85,15 +85,15 @@ public class AdminUI {
         System.out.println();
 
         System.out.print("Entrer le nom du projet: ");
-        String name = scanner.nextLine();
+        String name = scanner.next();
         System.out.println();
 
         System.out.print("Entrer la date de debut du projet: ");
-        String startDate = scanner.nextLine();
+        String startDate = scanner.next();
         System.out.println();
 
         System.out.print("Entrer la date de fin du projet: ");
-        String endDate = scanner.nextLine();
+        String endDate = scanner.next();
         System.out.println();
 
         System.out.print("Entrer le budget du projet: ");
@@ -107,14 +107,33 @@ public class AdminUI {
     }
 
     private void assignProject() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter employee ID: ");
+        int employeeID = scanner.nextInt();
 
+        System.out.print("Enter project ID: ");
+        int projectID = scanner.nextInt();
+
+        boolean success = timeLogSystem.assignProject(employeeID, projectID);
+        if (success) {
+            System.out.println("Project assigned successfully.");
+        } else {
+            System.out.println("Failed to assign project. Please check the employee ID and project ID.");
+        }
     }
 
     private void viewProjectStatus() {
-
+        String projectStatusReport = timeLogSystem.generateProjectStatusReport();
+        System.out.println(projectStatusReport);
     }
 
     private void viewEmployeeSalaryReport() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter employee ID: ");
+        int employeeID = scanner.nextInt();
+
+        String employeeSalaryReport = timeLogSystem.generateEmployeeSalaryReport(employeeID);
+        System.out.println(employeeSalaryReport);
     }
 
 }

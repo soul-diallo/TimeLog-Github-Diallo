@@ -5,7 +5,9 @@ import java.util.Date;
 public class Projet {
     private String name;
     private int ID;
-
+    private String startDate;
+    private String endDate;
+    private double budget;
     public String getName() {
         return name;
     }
@@ -53,9 +55,5 @@ public class Projet {
         this.endDate = endDate;
         this.budget = budget;
     }
-
-    private String startDate;
-    private String endDate;
-    private double budget;
 
 }

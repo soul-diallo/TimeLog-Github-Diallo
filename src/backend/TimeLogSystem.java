@@ -58,4 +58,69 @@ public class TimeLogSystem {
         assignments.add(assignment);
     }
 
+    public String generateProjectStatusReport() {
+        StringBuilder report = new StringBuilder();
+        for (Projet project : projects) {
+            report.append("Project: ").append(project.getName()).append("\n");
+
+            double totalWorkedHours = getTotalWorkedHoursForProject(project);
+            report.append("Total Worked Hours: ").append(totalWorkedHours).append("\n");
+
+            double totalBudget = project.getTotalBudget();
+            double completionPercentage = (totalWorkedHours / totalBudget) * 100;
+            report.append("Completion Percentage: ").append(completionPercentage).append("%").append("\n");
+
+            // ... Add more project status details if needed
+
+            report.append("\n");
+        }
+        return report.toString();
+    }
+
+    public String generateEmployeeSalaryReport(int employeeID) {
+        Employe employee = findEmployeeByID(employeeID);
+        if (employee == null) {
+            return "Employee not found.";
+        }
+
+        StringBuilder report = new StringBuilder();
+        report.append("Employee: ").append(employee.getName()).append("\n");
+
+        // Calculate and add employee salary details (replace with your calculations)
+        double totalWorkedHours = getTotalWorkedHoursForEmployee(employee);
+        double grossSalary = employee.calculateGrossSalary(totalWorkedHours);
+        double netSalary = employee.calculateNetSalary(grossSalary);
+
+        report.append("Total Worked Hours: ").append(totalWorkedHours).append("\n");
+        report.append("Gross Salary: ").append(grossSalary).append("\n");
+        report.append("Net Salary: ").append(netSalary).append("\n");
+
+        // ... Add more employee salary details if needed
+
+        return report.toString();
+    }
+
+    private double getTotalWorkedHoursForProject(Projet project) {
+        // Calculate the total worked hours for the project by summing up the worked hours for each assignment
+        double totalWorkedHours = 0;
+        for (Assignment assignment : assignments) {
+            if (assignment.getProject().equals(project)) {
+                totalWorkedHours += assignment.getWorkedHours();
+            }
+        }
+        return totalWorkedHours;
+    }
+
+    private double getTotalWorkedHoursForEmployee(Employee employee) {
+        // Calculate the total worked hours for the employee by summing up the worked hours for each assignment
+        double totalWorkedHours = 0;
+        for (Assignment assignment : assignments) {
+            if (assignment.getEmployee().equals(employee)) {
+                totalWorkedHours += assignment.getWorkedHours();
+            }
+        }
+        return totalWorkedHours;
+    }
+
+
 }
