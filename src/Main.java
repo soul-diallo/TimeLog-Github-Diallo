@@ -1,7 +1,4 @@
 import backend.*;
-import UI.AdminUI;
-
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {

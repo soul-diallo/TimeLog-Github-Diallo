@@ -1,126 +1,304 @@
 package backend;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
+import static com.packtpub.db.Main.scanner;
 
 public class TimeLogSystem {
+    private static List<Employee> employees;
+    private List<Project> projects;
+    private AssignmentManager assignmentManager;
+    private String adminUsername;
+    private String adminPassword;
+    private static final int maxProjectsPerEmployee = 2; // Default value for NPE (Number of Projects per Employee)
 
-    public TimeLogSystem() {
+    private Employee loggedInUser;
+
+    public static final String JSON_FILENAME = "timeLogSystem.json";
+
+    public void setLoggedInUser(Employee loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
+
+    public TimeLogSystem(Employee loggedInUser, String adminUsername, String adminPassword) {
+        this.adminUsername = adminUsername;
+        this.adminPassword = adminPassword;
         employees = new ArrayList<>();
         projects = new ArrayList<>();
-        assignments = new ArrayList<>();
+        assignmentManager = new AssignmentManager();
+        this.loggedInUser = loggedInUser;
+
+        // Charger les donnees depuis le fichier JSON s'il existe
+        loadFromJson(JSON_FILENAME);
     }
-    public List<Projet> getProjects() {
+
+    // Méthode pour sauvegarder les données dans un fichier JSON
+    private void saveToJson(String filename) {
+        try (Writer writer = new FileWriter(filename)) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(this, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Méthode pour charger les données depuis un fichier JSON
+    private void loadFromJson(String filename) {
+        try (Reader reader = new FileReader(filename)) {
+            Gson gson = new Gson();
+            TimeLogSystem loadedTimeLogSystem = gson.fromJson(reader, TimeLogSystem.class);
+
+            // Mettre à jour les données actuelles
+            employees = employees;
+            this.projects = loadedTimeLogSystem.projects;
+            this.assignmentManager = loadedTimeLogSystem.assignmentManager;
+        } catch (IOException e) {
+            // Le fichier JSON n'existe pas encore ou ne peut pas être lu, c'est normal
+        }
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        TimeLogSystem.employees = employees;
+    }
+
+    public List<Project> getProjects() {
         return projects;
     }
-    public static List<Employe> employees;
-    public static List<Projet> projects;
-    public static List<Assignation> assignments;
 
-    public void addEmployee(Employe employe) {
-        employees.add(employe);
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
-    public void updateEmployee(Employe employe) {
-        // Vérifier si l'employé existe, puis mettre à jour ses informations
-        for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).getID() == employe.getID()) {
-                employees.set(i, employe);
-                break;
+
+    public AssignmentManager getAssignmentManager() {
+        return assignmentManager;
+    }
+
+    public void setAssignmentManager(AssignmentManager assignmentManager) {
+        this.assignmentManager = assignmentManager;
+    }
+
+    public String getAdminUsername() {
+        return adminUsername;
+    }
+
+    public void setAdminUsername(String adminUsername) {
+        this.adminUsername = adminUsername;
+    }
+
+    public String getAdminPassword() {
+        return adminPassword;
+    }
+
+    public void setAdminPassword(String adminPassword) {
+        this.adminPassword = adminPassword;
+    }
+
+    // Methods to manage employees and projects
+
+    public void assignEmployeeToProject(Employee employee, Project project) {
+        assignmentManager.assignEmployeeToProject(employee, project);
+    }
+
+    public List<Project> getEmployeeAssignments(Employee employee) {
+        return assignmentManager.getEmployeeAssignments(employee);
+    }
+
+    // Other methods for TimeLogSystem functionalities
+
+
+
+    public static int getMaxProjectsPerEmployee() {
+        return maxProjectsPerEmployee;
+    }
+
+    public boolean authenticateAdmin(String username, String password) {
+        // Vérifie l'authentification de l'administrateur
+        return adminUsername.equals(username) && adminPassword.equals(password);
+    }
+
+    public boolean authenticateUser(String username, String password) {
+        for (Employee employee : employees) {
+            if (employee.getUsername().equals(username) && employee.getPassword().equals(password)) {
+                return true;
             }
         }
-    }
-    public void deleteEmployee(int employeeID) {
-        // Vérifier si l'employé existe, puis le supprimer de la liste
-        employees.removeIf(employee -> employee.getID() == employeeID);
+        return false;
     }
 
-    public void addProject(Projet project) {
+    public Employee getEmployeeByUsername(String username) {
+        for (Employee employee : employees) {
+            if (employee.getUsername().equals(username)) {
+                return employee;
+            }
+        }
+        return null;
+    }
+
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
+        saveToJson(JSON_FILENAME);
+    }
+
+    public void removeEmployee(Employee employee) {
+        employees.remove(employee);
+    }
+
+    public void updateEmployee(Employee employee) {
+        // Recherche l'employé dans la liste et met à jour ses informations si trouvé
+        Employee existingEmployee = findEmployeeById(employee.getId());
+        if (existingEmployee != null) {
+            existingEmployee.setUsername(employee.getUsername());
+            existingEmployee.setPassword(employee.getPassword());
+            existingEmployee.setBaseHourlyRate(employee.getBaseHourlyRate());
+            existingEmployee.setOvertimeHourlyRate(employee.getOvertimeHourlyRate());
+
+        }
+    }
+
+    public void addProject(Project project) {
         projects.add(project);
+        saveToJson(JSON_FILENAME);
     }
-    public void updateProject(Projet projet) {
-        // Vérifier si le projet existe, puis mettre à jour ses informations
-        for (int i = 0; i < projects.size(); i++) {
-            if (projects.get(i).getID() == projet.getID()) {
-                projects.set(i, projet);
-                break;
+
+    public void removeProject(Project project) {
+        projects.remove(project);
+    }
+
+    public void updateProject(Project project) {
+        // Recherche le projet dans la liste et met à jour ses informations si trouvé
+        Project existingProject = findProjectById(project.getId());
+        if (existingProject != null) {
+            existingProject.setName(project.getName());
+            existingProject.setStartDate(project.getStartDate());
+            existingProject.setEndDate(project.getEndDate());
+            existingProject.setBudgetedHours(project.getBudgetedHours());
+
+        }
+    }
+
+    public Employee findEmployeeById(String id) {
+        for (Employee employee : employees) {
+            if (Objects.equals(employee.getId(), id)) {
+                return employee;
             }
         }
-    }
-    public void deleteProject(int projectID) {
-        // Vérifier si le projet existe, puis le supprimer de la liste
-        projects.removeIf(project -> project.getID() == projectID);
+        return null;
     }
 
-    public void assignProject(Employe employe, Projet project, String discipline, Date startTime) {
-        // Vérifier si l'employé existe et si le projet est valide, puis créer l'assignation
-        Assignation assignment = new Assignation(employe, project, discipline, startTime, null);
-        assignments.add(assignment);
-    }
-
-    public String generateProjectStatusReport() {
-        StringBuilder report = new StringBuilder();
-        for (Projet project : projects) {
-            report.append("Project: ").append(project.getName()).append("\n");
-
-            double totalWorkedHours = getTotalWorkedHoursForProject(project);
-            report.append("Total Worked Hours: ").append(totalWorkedHours).append("\n");
-
-            double totalBudget = project.getTotalBudget();
-            double completionPercentage = (totalWorkedHours / totalBudget) * 100;
-            report.append("Completion Percentage: ").append(completionPercentage).append("%").append("\n");
-
-            // ... Add more project status details if needed
-
-            report.append("\n");
-        }
-        return report.toString();
-    }
-
-    public String generateEmployeeSalaryReport(int employeeID) {
-        Employe employee = findEmployeeByID(employeeID);
-        if (employee == null) {
-            return "Employee not found.";
-        }
-
-        StringBuilder report = new StringBuilder();
-        report.append("Employee: ").append(employee.getName()).append("\n");
-
-        // Calculate and add employee salary details (replace with your calculations)
-        double totalWorkedHours = getTotalWorkedHoursForEmployee(employee);
-        double grossSalary = employee.calculateGrossSalary(totalWorkedHours);
-        double netSalary = employee.calculateNetSalary(grossSalary);
-
-        report.append("Total Worked Hours: ").append(totalWorkedHours).append("\n");
-        report.append("Gross Salary: ").append(grossSalary).append("\n");
-        report.append("Net Salary: ").append(netSalary).append("\n");
-
-        // ... Add more employee salary details if needed
-
-        return report.toString();
-    }
-
-    private double getTotalWorkedHoursForProject(Projet project) {
-        // Calculate the total worked hours for the project by summing up the worked hours for each assignment
-        double totalWorkedHours = 0;
-        for (Assignment assignment : assignments) {
-            if (assignment.getProject().equals(project)) {
-                totalWorkedHours += assignment.getWorkedHours();
+    public Project findProjectById(int id) {
+        for (Project project : projects) {
+            if (project.getId() == id) {
+                return project;
             }
         }
-        return totalWorkedHours;
+        return null;
     }
 
-    private double getTotalWorkedHoursForEmployee(Employee employee) {
-        // Calculate the total worked hours for the employee by summing up the worked hours for each assignment
-        double totalWorkedHours = 0;
-        for (Assignment assignment : assignments) {
-            if (assignment.getEmployee().equals(employee)) {
-                totalWorkedHours += assignment.getWorkedHours();
+    public List<Project> getProjectsForEmployee(Employee employee) {
+        List<Project> assignedProjects = new ArrayList<>();
+        for (Project project : projects) {
+            if (project.getAssignedEmployees().contains(employee)) {
+                assignedProjects.add(project);
             }
         }
-        return totalWorkedHours;
+        return assignedProjects;
     }
 
+    public double calculateEmployeeSalary(Employee employee, Date startDate, Date endDate) {
+        double totalSalary = 0.0;
+        for (TimeEntry timeEntry : employee.getTimeEntries()) {
+            if (timeEntry.getDate().compareTo(startDate) >= 0 && timeEntry.getDate().compareTo(endDate) <= 0) {
+                totalSalary += calculateTimeEntrySalary(timeEntry, employee);
+            }
+        }
+        return totalSalary;
+    }
 
+    private double calculateTimeEntrySalary(TimeEntry timeEntry, Employee employee) {
+        double basePay = timeEntry.getHoursWorked() * employee.getBaseHourlyRate();
+        double overtimePay = (timeEntry.getHoursWorked() - employee.getStandardHoursPerWeek()) * employee.getOvertimeHourlyRate();
+        return basePay + overtimePay;
+    }
+
+    public double calculateTotalBasePay() {
+        double totalBasePay = 0.0;
+        for (Employee employee : employees) {
+            totalBasePay += employee.getBaseHourlyRate() * employee.getTotalRegularHoursWorked();
+        }
+        return totalBasePay;
+    }
+
+    public double calculateTotalOvertimePay() {
+        double totalOvertimePay = 0.0;
+        for (Employee employee : employees) {
+            totalOvertimePay += employee.getOvertimeHourlyRate() * employee.getTotalOvertimeHoursWorked();
+        }
+        return totalOvertimePay;
+    }
+
+    public void addTimeEntry(TimeEntry timeEntry) {
+        assignmentManager.addTimeEntry(timeEntry);
+    }
+
+    public Employee getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public Project getAssignedProjectByName(String projectName) {
+        for (Project project : projects) {
+            if (project.getName().equals(projectName)) {
+                return project;
+            }
+        }
+        return null; // Aucun projet trouvé avec le nom donné
+    }
+
+    public static Employee authenticateUser() {
+        System.out.println("Authentification de l'utilisateur :");
+        System.out.print("Nom d'utilisateur : ");
+        String username = scanner.nextLine();
+
+        System.out.print("Mot de passe : ");
+        String password = scanner.nextLine();
+
+        // Vérifier l'authentification de l'utilisateur
+
+        for (Employee employee : employees) {
+            if (employee.getUsername().equals(username) && employee.getPassword().equals(password)) {
+                return employee; // Retourner l'employé authentifié
+            }
+        }
+
+        System.out.println("Authentification échouée pour l'utilisateur.");
+        return null;
+    }
+
+    public static Employee authenticateAdmin() {
+        System.out.println("Authentification de l'administrateur :");
+        System.out.print("Nom d'utilisateur : ");
+        String username = scanner.nextLine();
+
+        System.out.print("Mot de passe : ");
+        String password = scanner.nextLine();
+
+        // Vérifier l'authentification de l'administrateur
+        if (username.equals("admin") && password.equals("admin")) {
+            return new Employee(username, "adminID", 0.0, 0.0, new Date(), null, "", "Admin", password); // Retourner l'administrateur authentifié
+        }
+
+        System.out.println("Authentification échouée pour l'administrateur.");
+        return null;
+    }
 }
+
